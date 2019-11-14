@@ -31,5 +31,10 @@ public class StudentTest {
         assertEquals("Kowalski",s.getSurname());
     }
 
+    @Test
+    public void shouldReturnIndexNr() {
+        Student s = new Student("Jan","Kowalski","D12333");
+        assertEquals("D12333",s.getIndexNr());
+    }
 
 }

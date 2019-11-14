@@ -17,4 +17,7 @@ public class Student {
         return this.surname;
     }
 
+    String getIndexNr() {
+        return this.indexNr;
+    }
 }
