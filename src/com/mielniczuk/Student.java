@@ -1,5 +1,4 @@
 package com.mielniczuk;
 
-public class Diary {
-
+public class Student {
 }
