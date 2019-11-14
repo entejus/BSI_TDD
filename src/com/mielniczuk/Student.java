@@ -9,4 +9,12 @@ public class Student {
         this.indexNr = indexNr;
     }
 
+    String getFirstName() {
+        return this.firstName;
+    }
+
+    String getSurname(){
+        return this.surname;
+    }
+
 }

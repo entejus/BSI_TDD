@@ -19,4 +19,17 @@ public class StudentTest {
         assertNotNull(s);
     }
 
+    @Test
+    public void shouldReturnFirstName() {
+        Student s = new Student("Jan","Kowalski","D12333");
+        assertEquals("Jan",s.getFirstName());
+    }
+
+    @Test
+    public void shouldReturnSurname() {
+        Student s = new Student("Jan","Kowalski","D12333");
+        assertEquals("Kowalski",s.getSurname());
+    }
+
+
 }
