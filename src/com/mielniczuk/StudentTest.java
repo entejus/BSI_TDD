@@ -86,7 +86,7 @@ public class StudentTest {
     }
     @Test(expected = IllegalArgumentException.class)
     @Parameters({"0","1","-1","6","5.5","2.2","3.9"})
-    public void shouldAcceptValidGrades(Double grade){
+    public void addGradeShouldAcceptValidGrades(Double grade){
         Student s = new Student("Jan","Kowalski","D12333");
         String addingDateString = s.addGrade(grade);
     }
@@ -94,9 +94,25 @@ public class StudentTest {
     @Test
     @Parameters({"12-11-2019 12:39,3.5","23-01-2019 14:29,5.0"})
     public void shouldEditGrade(String dateString,Double newGrade){
-        Student s = new Student("Jan","Kowalski","D12333");
-        s.editGrade(dateString,newGrade);
-        assertEquals(newGrade,s.getGrades().get(dateString));
+        studentWithGrades.editGrade(dateString,newGrade);
+        assertEquals(newGrade,studentWithGrades.getGrades().get(dateString));
     }
-    
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"12-11-2019 12:39,0","23-01-2019 14:29,-1",
+            "12-11-2019 12:39,1","23-01-2019 14:29,5.5",
+            "12-11-2019 12:39,2.2","23-01-2019 14:29,3.9"})
+    public void editGradShouldAcceptValidGrades(String dateString,Double newGrade){
+        studentWithGrades.editGrade(dateString,newGrade);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({" ,2","12-11-1998 12:00,5.0"})
+    public void editGradShouldAcceptValidDate(String dateString,Double newGrade){
+        studentWithGrades.editGrade(dateString,newGrade);
+    }
+
+
+
+
 }

@@ -66,10 +66,12 @@ public class Student {
         }
     }
 
-
-
     void editGrade(String dateString,Double newGrade){
-
+        if (VALID_GRADES.contains(newGrade) && grades.containsKey(dateString)) {
+            grades.replace(dateString, newGrade);
+        } else {
+            throw new IllegalArgumentException("Grade is not valid");
+        }
     }
 
 
