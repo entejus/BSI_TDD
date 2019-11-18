@@ -23,7 +23,7 @@ public class Student {
         this.firstName = firstName;
         this.surname = surname;
         this.indexNr = indexNr;
-        this.grades= grades;
+        this.grades = grades;
     }
 
     String getFirstName() {
@@ -50,7 +50,7 @@ public class Student {
         this.indexNr = indexNr;
     }
 
-    LinkedHashMap<String, Double> getGrades(){
+    LinkedHashMap<String, Double> getGrades() {
         return this.grades;
     }
 
@@ -66,9 +66,17 @@ public class Student {
         }
     }
 
-    void editGrade(String dateString,Double newGrade){
+    void editGrade(String dateString, Double newGrade) {
         if (VALID_GRADES.contains(newGrade) && grades.containsKey(dateString)) {
             grades.replace(dateString, newGrade);
+        } else {
+            throw new IllegalArgumentException("Grade is not valid");
+        }
+    }
+
+    void deleteGrade(String dateString) {
+        if (grades.containsKey(dateString)) {
+            grades.remove(dateString);
         } else {
             throw new IllegalArgumentException("Grade is not valid");
         }

@@ -3,7 +3,7 @@ package com.mielniczuk;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,15 +17,15 @@ import static org.junit.Assert.*;
 @RunWith(JUnitParamsRunner.class)
 public class StudentTest {
 
-    private static Student student;
-    private static Student studentWithGrades;
-    private static String firstName = "Jan";
-    private static String surname = "Kowalski";
-    private static String indexNr = "D12333";
+    private  Student student;
+    private  Student studentWithGrades;
+    private  String firstName = "Jan";
+    private  String surname = "Kowalski";
+    private  String indexNr = "D12333";
 
 
-    @BeforeClass
-    public static void setupClass(){
+    @Before
+    public void setupClass(){
         student = new Student(firstName,surname,indexNr);
         LinkedHashMap<String, Double> grades = new LinkedHashMap<>();
         grades.put("12-11-2019 12:39",4.5);
@@ -112,7 +112,18 @@ public class StudentTest {
         studentWithGrades.editGrade(dateString,newGrade);
     }
 
+    @Test
+    @Parameters({"12-11-2019 12:39","23-01-2019 14:29"})
+    public void shouldDeleteGrade(String dateString){
+        studentWithGrades.deleteGrade(dateString);
+        assertNull(studentWithGrades.getGrades().get(dateString));
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({" ","12-11-1998 12:00,44-111-32 50:12"})
+    public void deleteGradShouldAcceptValidDate(String dateString){
+        studentWithGrades.deleteGrade(dateString);
+    }
 
 
 }
