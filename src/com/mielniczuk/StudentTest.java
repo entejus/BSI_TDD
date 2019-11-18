@@ -8,9 +8,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 
+import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.*;
 
 
@@ -125,5 +128,24 @@ public class StudentTest {
         studentWithGrades.deleteGrade(dateString);
     }
 
+    private Object[] getDoubleArray() {
+        return new Object[]{
+                new Object[]{Arrays.asList(4.5,2.0,5.0,3.5,4.0),3.8},
+                new Object[]{Arrays.asList(2.0,2.0,2.0,2.0,2.0),2.0},
+                new Object[]{Arrays.asList(3.5,2.5,5.0,4.5,2.0),3.5},
+                new Object[]{Arrays.asList(4.5,4.0,5.0,4.5,4.0),4.4},
+        };
+    }
+
+    @Test
+    @Parameters(method = "getDoubleArray")
+    public void shouldCountAverage(List<Double> grades,Double expectedAverage){
+        LinkedHashMap<String, Double> gradesMap = new LinkedHashMap<>();
+        for (int i=0;i<grades.size();i++) {
+            gradesMap.put("12-11-2019 12:3"+i,grades.get(i));
+        }
+        Student s = new Student("Jan","Kowalski","D12333",gradesMap);
+        assertEquals(expectedAverage,s.countAverage(),0.01);
+    }
 
 }

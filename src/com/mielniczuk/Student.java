@@ -1,10 +1,7 @@
 package com.mielniczuk;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class Student {
     private static final ArrayList<Double> VALID_GRADES = new ArrayList<>(Arrays.asList(2.0, 3.0, 3.5, 4.0, 4.5, 5.0));
@@ -70,7 +67,7 @@ public class Student {
         if (VALID_GRADES.contains(newGrade) && grades.containsKey(dateString)) {
             grades.replace(dateString, newGrade);
         } else {
-            throw new IllegalArgumentException("Grade is not valid");
+            throw new IllegalArgumentException("Grade or date is not valid");
         }
     }
 
@@ -78,9 +75,18 @@ public class Student {
         if (grades.containsKey(dateString)) {
             grades.remove(dateString);
         } else {
-            throw new IllegalArgumentException("Grade is not valid");
+            throw new IllegalArgumentException("Date is not valid");
         }
     }
 
+    double countAverage() {
+        double average;
+        double gradesSum =0;
 
+        for (Map.Entry<String, Double> pair: grades.entrySet()) {
+            gradesSum+=pair.getValue();
+        }
+        average = gradesSum/grades.size();
+        return average;
+    }
 }
