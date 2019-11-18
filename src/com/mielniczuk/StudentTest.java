@@ -3,14 +3,13 @@ package com.mielniczuk;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +17,21 @@ import static org.junit.Assert.*;
 @RunWith(JUnitParamsRunner.class)
 public class StudentTest {
 
-    private Student student;
+    private static Student student;
+    private static Student studentWithGrades;
+    private static String firstName = "Jan";
+    private static String surname = "Kowalski";
+    private static String indexNr = "D12333";
+
+
+    @BeforeClass
+    public static void setupClass(){
+        student = new Student(firstName,surname,indexNr);
+        LinkedHashMap<String, Double> grades = new LinkedHashMap<>();
+        grades.put("12-11-2019 12:39",4.5);
+        grades.put("23-01-2019 14:29",2.0);
+        studentWithGrades = new Student(firstName,surname,indexNr,grades);
+    }
 
 
     @Test
@@ -28,18 +41,15 @@ public class StudentTest {
     }
     @Test
     public void shouldReturnFirstName() {
-        Student s = new Student("Jan","Kowalski","D12333");
-        assertEquals("Jan",s.getFirstName());
+        assertEquals(firstName,student.getFirstName());
     }
     @Test
     public void shouldReturnSurname() {
-        Student s = new Student("Jan","Kowalski","D12333");
-        assertEquals("Kowalski",s.getSurname());
+        assertEquals(surname,student.getSurname());
     }
     @Test
     public void shouldReturnIndexNr() {
-        Student s = new Student("Jan","Kowalski","D12333");
-        assertEquals("D12333",s.getIndexNr());
+        assertEquals(indexNr,student.getIndexNr());
     }
     @Test
     public void shouldSetFirstName(){
@@ -63,22 +73,30 @@ public class StudentTest {
     @Test
     public void shouldSetGrade() {
         Student s = new Student("Jan","Kowalski","D12333");
-        Date addingDate = s.addGrade(5.0);
-        assertEquals(s.grades.get(addingDate),5.0,0.1);
+        String addingDateString = s.addGrade(5.0);
+        assertEquals(s.getGrades().get(addingDateString),5.0,0.1);
     }
     @Test
     public void shouldReturnGradeAdditionDate(){
         Student s = new Student("Jan","Kowalski","D12333");
-        Date addingDate = s.addGrade(5.0);
+        String addingDateString = s.addGrade(5.0);
         Date currentDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        assertEquals(formatter.format(addingDate),formatter.format(currentDate));
+        assertEquals(addingDateString,formatter.format(currentDate));
     }
     @Test(expected = IllegalArgumentException.class)
     @Parameters({"0","1","-1","6","5.5","2.2","3.9"})
     public void shouldAcceptValidGrades(Double grade){
         Student s = new Student("Jan","Kowalski","D12333");
-        Date addingDate = s.addGrade(grade);
+        String addingDateString = s.addGrade(grade);
     }
 
+    @Test
+    @Parameters({"12-11-2019 12:39,3.5","23-01-2019 14:29,5.0"})
+    public void shouldEditGrade(String dateString,Double newGrade){
+        Student s = new Student("Jan","Kowalski","D12333");
+        s.editGrade(dateString,newGrade);
+        assertEquals(newGrade,s.getGrades().get(dateString));
+    }
+    
 }
