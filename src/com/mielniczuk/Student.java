@@ -52,7 +52,7 @@ public class Student {
         return this.presenceList;
     }
 
-    void addGrade(String addingDate,Double grade) {
+    void addGrade(String addingDate, Double grade) {
         if (VALID_GRADES.contains(grade)) {
             grades.put(addingDate, grade);
         } else {
@@ -77,7 +77,7 @@ public class Student {
     }
 
     double countAverage() {
-        double average=0;
+        double average = 0;
         double gradesSum = 0;
         if (!grades.isEmpty()) {
             for (Map.Entry<String, Double> pair : grades.entrySet()) {
@@ -89,18 +89,18 @@ public class Student {
     }
 
     void setPresence(String meetingDate, Boolean presence) {
-        if(presenceList.size()<15)
-        presenceList.put(meetingDate,presence);
-        else{
+        if (presenceList.size() < 15)
+            presenceList.put(meetingDate, presence);
+        else {
             throw new IllegalArgumentException("Osiągnięto maksymalny limit spotkań");
         }
     }
 
-    Boolean checkPresence(String meetingDate){
-        Boolean checkedPresence = presenceList.get(meetingDate);
-        return checkedPresence;
+    Boolean checkPresence(String meetingDate) {
+        if (presenceList.containsKey(meetingDate)) {
+            return presenceList.get(meetingDate);
+        } else throw new IllegalArgumentException("Nie istnieje spotkanie z tego dnia");
     }
-
 
 
 }

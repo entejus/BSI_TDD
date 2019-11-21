@@ -248,4 +248,14 @@ public class StudentTest {
         //then
         assertEquals(expectedPresence,checkedPresence);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldCheckPresenceForExistingMeetings(){
+        //given
+        Student s = new Student("Jan", "Kowalski", "D12333");
+        s.setPresence("12-11-2019",true);
+
+        s.checkPresence("1-12-2019");
+    }
+
 }
