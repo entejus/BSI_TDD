@@ -1,5 +1,6 @@
 package com.mielniczuk;
 
+import javax.naming.SizeLimitExceededException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -8,20 +9,16 @@ public class Student {
 
     private String firstName, surname, indexNr;
     private LinkedHashMap<String, Double> grades;
+    private LinkedHashMap<String, Boolean> presenceList;
 
     public Student(String firstName, String surname, String indexNr) {
         this.firstName = firstName;
         this.surname = surname;
         this.indexNr = indexNr;
         this.grades = new LinkedHashMap<>();
+        this.presenceList = new LinkedHashMap<>();
     }
 
-    public Student(String firstName, String surname, String indexNr, LinkedHashMap<String, Double> grades) {
-        this.firstName = firstName;
-        this.surname = surname;
-        this.indexNr = indexNr;
-        this.grades = grades;
-    }
 
     String getFirstName() {
         return this.firstName;
@@ -51,13 +48,13 @@ public class Student {
         return this.grades;
     }
 
-    String addGrade(Double grade) {
+    LinkedHashMap<String, Boolean> getPresenceList() {
+        return this.presenceList;
+    }
+
+    void addGrade(String addingDate,Double grade) {
         if (VALID_GRADES.contains(grade)) {
-            Date currentDate = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-            String currentDateString = formatter.format(currentDate);
-            grades.put(currentDateString, grade);
-            return currentDateString;
+            grades.put(addingDate, grade);
         } else {
             throw new IllegalArgumentException("Grade is not valid");
         }
@@ -80,13 +77,30 @@ public class Student {
     }
 
     double countAverage() {
-        double average;
-        double gradesSum =0;
-
-        for (Map.Entry<String, Double> pair: grades.entrySet()) {
-            gradesSum+=pair.getValue();
+        double average=0;
+        double gradesSum = 0;
+        if (!grades.isEmpty()) {
+            for (Map.Entry<String, Double> pair : grades.entrySet()) {
+                gradesSum += pair.getValue();
+            }
+            average = gradesSum / grades.size();
         }
-        average = gradesSum/grades.size();
         return average;
     }
+
+    void setPresence(String meetingDate, Boolean presence) {
+        if(presenceList.size()<15)
+        presenceList.put(meetingDate,presence);
+        else{
+            throw new IllegalArgumentException("Osiągnięto maksymalny limit spotkań");
+        }
+    }
+
+    Boolean checkPresence(String meetingDate){
+        Boolean checkedPresence = presenceList.get(meetingDate);
+        return checkedPresence;
+    }
+
+
+
 }
