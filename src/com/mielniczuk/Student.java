@@ -24,39 +24,39 @@ public class Student {
     }
 
 
-    String getFirstName() {
+    public String getFirstName() {
         return this.firstName;
     }
 
-    String getSurname() {
+    public String getSurname() {
         return this.surname;
     }
 
-    String getIndexNr() {
+    public String getIndexNr() {
         return this.indexNr;
     }
 
-    void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    void setSurname(String surname) {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 
-    void setIndexNr(String indexNr) {
+    public void setIndexNr(String indexNr) {
         this.indexNr = indexNr;
     }
 
-    LinkedHashMap<String, Double> getGrades() {
+    public LinkedHashMap<String, Double> getGrades() {
         return this.grades;
     }
 
-    LinkedHashMap<String, Boolean> getPresenceList() {
+    public LinkedHashMap<String, Boolean> getPresenceList() {
         return this.presenceList;
     }
 
-    void addGrade(String addingDate, Double grade) {
+    public void addGrade(String addingDate, Double grade) {
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         format.setLenient(false);
         try {
@@ -71,7 +71,7 @@ public class Student {
         }
     }
 
-    void editGrade(String dateString, Double newGrade) {
+    public void editGrade(String dateString, Double newGrade) {
         if (VALID_GRADES.contains(newGrade) && grades.containsKey(dateString)) {
             grades.replace(dateString, newGrade);
         } else {
@@ -79,7 +79,7 @@ public class Student {
         }
     }
 
-    void deleteGrade(String dateString) {
+    public void deleteGrade(String dateString) {
         if (grades.containsKey(dateString)) {
             grades.remove(dateString);
         } else {
@@ -87,7 +87,7 @@ public class Student {
         }
     }
 
-    double countAverage() {
+    public double countAverage() {
         double average = 0;
         double gradesSum = 0;
         if (!grades.isEmpty()) {
@@ -99,7 +99,7 @@ public class Student {
         return average;
     }
 
-    void setPresence(String meetingDate, Boolean presence) {
+    public void setPresence(String meetingDate, Boolean presence) {
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         format.setLenient(false);
         try {
@@ -114,19 +114,19 @@ public class Student {
         }
     }
 
-    Boolean checkPresence(String meetingDate) {
+    public Boolean checkPresence(String meetingDate) {
         if (presenceList.containsKey(meetingDate)) {
             return presenceList.get(meetingDate);
         } else throw new IllegalArgumentException("Nie istnieje spotkanie z tego dnia");
     }
 
-    void editPresence(String meetingDate, Boolean presence) {
+    public void editPresence(String meetingDate, Boolean presence) {
         if (presenceList.containsKey(meetingDate)) {
             presenceList.replace(meetingDate, presence);
         } else throw new IllegalArgumentException("Nie istnieje spotkanie z tego dnia");
     }
 
-    int getAbsencesNumber(){
+    public int getAbsencesNumber(){
         int count =0;
         for (Map.Entry<String, Boolean> pair : presenceList.entrySet()) {
             if(!pair.getValue()){
