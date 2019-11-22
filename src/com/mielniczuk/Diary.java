@@ -25,8 +25,12 @@ public class Diary {
         }
     }
 
-    public void deleteStudent(){
-
+    public void deleteStudent(String indexNr) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            studentList.removeIf(student -> student.getIndexNr().equals(indexNr));
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
     }
 
 }
