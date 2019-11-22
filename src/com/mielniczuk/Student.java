@@ -1,8 +1,12 @@
 package com.mielniczuk;
 
 import javax.naming.SizeLimitExceededException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Student {
     private static final ArrayList<Double> VALID_GRADES = new ArrayList<>(Arrays.asList(2.0, 3.0, 3.5, 4.0, 4.5, 5.0));
@@ -53,10 +57,17 @@ public class Student {
     }
 
     void addGrade(String addingDate, Double grade) {
-        if (VALID_GRADES.contains(grade)) {
-            grades.put(addingDate, grade);
-        } else {
-            throw new IllegalArgumentException("Grade is not valid");
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        format.setLenient(false);
+        try {
+            format.parse(addingDate);
+            if (VALID_GRADES.contains(grade)) {
+                grades.put(addingDate, grade);
+            } else {
+                throw new IllegalArgumentException("Grade is not valid");
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Date is not valid");
         }
     }
 
@@ -89,10 +100,17 @@ public class Student {
     }
 
     void setPresence(String meetingDate, Boolean presence) {
-        if (presenceList.size() < 15)
-            presenceList.put(meetingDate, presence);
-        else {
-            throw new IllegalArgumentException("Osiągnięto maksymalny limit spotkań");
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        format.setLenient(false);
+        try {
+            format.parse(meetingDate);
+            if (presenceList.size() < 15)
+                presenceList.put(meetingDate, presence);
+            else {
+                throw new IllegalArgumentException("Osiągnięto maksymalny limit spotkań");
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Date is not valid");
         }
     }
 
@@ -102,5 +120,20 @@ public class Student {
         } else throw new IllegalArgumentException("Nie istnieje spotkanie z tego dnia");
     }
 
+    void editPresence(String meetingDate, Boolean presence) {
+        if (presenceList.containsKey(meetingDate)) {
+            presenceList.replace(meetingDate, presence);
+        } else throw new IllegalArgumentException("Nie istnieje spotkanie z tego dnia");
+    }
+
+    int getAbsencesNumber(){
+        int count =0;
+        for (Map.Entry<String, Boolean> pair : presenceList.entrySet()) {
+            if(!pair.getValue()){
+                count++;
+            }
+        }
+        return count;
+    }
 
 }

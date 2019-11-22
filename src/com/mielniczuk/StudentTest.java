@@ -24,6 +24,7 @@ public class StudentTest {
     private Student studentWithPresenceList;
     private LinkedHashMap<String, Double> exampleGrades;
     private LinkedHashMap<String, Boolean> examplePresenceList;
+    private ArrayList<String> meetingDates;
     private String firstName = "Jan";
     private String surname = "Kowalski";
     private String indexNr = "D12333";
@@ -43,26 +44,23 @@ public class StudentTest {
         examplePresenceList.put("25-01-2019", false);
         examplePresenceList.put("26-01-2019", true);
 
-        //given
-        studentWithGrades= new Student("Jan", "Kowalski", "D12333");
-        for (Map.Entry<String, Double> pair : exampleGrades.entrySet()) {
-            studentWithGrades.addGrade(pair.getKey(),pair.getValue());
-        }
-        studentWithPresenceList =  new Student("Jan", "Kowalski", "D12333");
+        meetingDates = new ArrayList<>();
         for (Map.Entry<String, Boolean> pair : examplePresenceList.entrySet()) {
-            studentWithPresenceList.setPresence(pair.getKey(),pair.getValue());
+            meetingDates.add(pair.getKey());
+        }
+
+        //given
+        studentWithGrades = new Student("Jan", "Kowalski", "D12333");
+        for (Map.Entry<String, Double> pair : exampleGrades.entrySet()) {
+            studentWithGrades.addGrade(pair.getKey(), pair.getValue());
+        }
+        studentWithPresenceList = new Student("Jan", "Kowalski", "D12333");
+        for (Map.Entry<String, Boolean> pair : examplePresenceList.entrySet()) {
+            studentWithPresenceList.setPresence(pair.getKey(), pair.getValue());
         }
 
     }
 
-//    @Before
-//    public void setupData(){
-//        //given
-//        studentWithGrades= new Student("Jan", "Kowalski", "D12333");
-//        for (Map.Entry<String, Double> pair : exampleGrades.entrySet()) {
-//            studentWithGrades.addGrade(pair.getKey(),pair.getValue());
-//        }
-//    }
 
 
     @Test
@@ -124,12 +122,12 @@ public class StudentTest {
 
     @Test
     @Parameters({"12-11-2019 12:39,3.5", "23-01-2019 14:29,5.0"})
-    public void shouldSetGrade(String dateString,Double grade) {
+    public void shouldAddGrade(String dateString, Double grade) {
         //given
         Student s = new Student("Jan", "Kowalski", "D12333");
 
         //when
-        s.addGrade(dateString,grade);
+        s.addGrade(dateString, grade);
 
         //then
         assertEquals(s.getGrades().get(dateString), grade, 0.1);
@@ -142,7 +140,16 @@ public class StudentTest {
         //given
         Student s = new Student("Jan", "Kowalski", "D12333");
         String date = "12-11-2019 12:39";
-        s.addGrade(date,grade);
+        s.addGrade(date, grade);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"","1-1-2 12;39","111-23-2 223;12","11/12/1997 12:53"})
+    public void addGradeShouldAcceptValidDate(String date) {
+        //given
+        Student s = new Student("Jan", "Kowalski", "D12333");
+        Double grade = 4.0;
+        s.addGrade(date, grade);
     }
 
     @Test
@@ -207,7 +214,7 @@ public class StudentTest {
         }
         Student s = new Student("Jan", "Kowalski", "D12333");
         for (Map.Entry<String, Double> pair : gradesMap.entrySet()) {
-            s.addGrade(pair.getKey(),pair.getValue());
+            s.addGrade(pair.getKey(), pair.getValue());
         }
 
         //then
@@ -228,6 +235,14 @@ public class StudentTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @Parameters({"","1-126-2","111-23-2","11/12/1997"})
+    public void setPresenceShouldAcceptValidDate(String date) {
+        //given
+        Student s = new Student("Jan", "Kowalski", "D12333");
+        s.setPresence(date, true);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void shouldSetMaxFixedPresence() {
         Student s = new Student("Jan", "Kowalski", "D12333");
         for (int i = 1; i <= 16; i++) {
@@ -237,25 +252,64 @@ public class StudentTest {
 
     @Test
     @Parameters({"12-11-2019,true", "23-01-2019,false"})
-    public void shouldCheckPresence(String meetingDate, Boolean expectedPresence){
+    public void shouldCheckPresence(String meetingDate, Boolean expectedPresence) {
         //given
         Student s = new Student("Jan", "Kowalski", "D12333");
-        s.setPresence(meetingDate,expectedPresence);
+        s.setPresence(meetingDate, expectedPresence);
 
         //when
         Boolean checkedPresence = s.checkPresence(meetingDate);
 
         //then
-        assertEquals(expectedPresence,checkedPresence);
+        assertEquals(expectedPresence, checkedPresence);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldCheckPresenceForExistingMeetings(){
+    public void shouldCheckPresenceForExistingMeetings() {
         //given
         Student s = new Student("Jan", "Kowalski", "D12333");
-        s.setPresence("12-11-2019",true);
+        s.setPresence("12-11-2019", true);
 
         s.checkPresence("1-12-2019");
     }
 
+
+    @Test
+    @Parameters({"24-01-2019, true","24-01-2019, false","25-01-2019, true","25-01-2019, false"})
+    public void shouldEditPresence(String meetingDate, Boolean presence) {
+        //when
+        studentWithPresenceList.editPresence(meetingDate, presence);
+
+        //then
+        assertEquals(presence, studentWithPresenceList.checkPresence(meetingDate));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({" ,true", "12-11-1998 12:00,false"})
+    public void editPresenceShouldAcceptValidDate(String meetingDate, Boolean presence){
+        studentWithPresenceList.editPresence(meetingDate, presence);
+    }
+
+    @Test
+    @Parameters({"6,4","0,0","2,1","2,2","5,0"})
+    public void shouldGetAbsencesNumber(int meetingsNumber,int expectedAbsencesNumber){
+        //given
+        Student s = new Student("Jan", "Kowalski", "D12333");
+        int j=1;
+        for(int i=0;i<meetingsNumber;i++){
+            if(i%2==1 || j<expectedAbsencesNumber){
+            s.setPresence((i+1)+"-11-2019",false);
+            j++;
+            }
+            else {
+                s.setPresence((i+1)+"-11-2019",true);
+            }
+        }
+
+        //when
+        int absencesNumber = s.getAbsencesNumber();
+
+        //then
+        assertEquals(expectedAbsencesNumber,absencesNumber);
+    }
 }
