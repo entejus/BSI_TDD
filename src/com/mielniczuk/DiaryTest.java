@@ -13,6 +13,8 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
@@ -169,10 +171,10 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.setStudentPresence(studentIndex,meetingDate,presence);
+        diary.setStudentPresence(studentIndex, meetingDate, presence);
 
         //then
-        verify(editedMockStudent).setPresence(meetingDate,presence);
+        verify(editedMockStudent).setPresence(meetingDate, presence);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -183,7 +185,7 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.setStudentPresence(studentIndex,meetingDate,presence);
+        diary.setStudentPresence(studentIndex, meetingDate, presence);
     }
 
     @Test
@@ -199,11 +201,11 @@ public class DiaryTest {
         }
         when(editedMockStudent.checkPresence(meetingDate)).thenReturn(expectedPresence);
         //when
-        Boolean studentPresence = diary.checkStudentPresence(studentIndex,meetingDate);
+        Boolean studentPresence = diary.checkStudentPresence(studentIndex, meetingDate);
 
         //then
         verify(editedMockStudent).checkPresence(meetingDate);
-        assertEquals(expectedPresence,studentPresence);
+        assertEquals(expectedPresence, studentPresence);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -214,7 +216,7 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.checkStudentPresence(studentIndex,meetingDate);
+        diary.checkStudentPresence(studentIndex, meetingDate);
     }
 
     @Test
@@ -229,10 +231,10 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.editStudentPresence(studentIndex,meetingDate,newPresence);
+        diary.editStudentPresence(studentIndex, meetingDate, newPresence);
 
         //then
-        verify(editedMockStudent).editPresence(meetingDate,newPresence);
+        verify(editedMockStudent).editPresence(meetingDate, newPresence);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -243,12 +245,12 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.editStudentPresence(studentIndex,meetingDate,newPresence);
+        diary.editStudentPresence(studentIndex, meetingDate, newPresence);
     }
 
     @Test
     @Parameters({"D12333,12-11-2019 12:39,3.5", "D86784,23-01-2019 14:29,5.0"})
-    public void shouldAddStudentGrade(String studentIndex, String addingDate, Double grade){
+    public void shouldAddStudentGrade(String studentIndex, String addingDate, Double grade) {
         //given
         Student editedMockStudent = null;
         for (Student s : mockedStudentList) {
@@ -257,26 +259,26 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.addStudentGrade(studentIndex,addingDate,grade);
+        diary.addStudentGrade(studentIndex, addingDate, grade);
 
         //then
-        verify(editedMockStudent).addGrade(addingDate,grade);
+        verify(editedMockStudent).addGrade(addingDate, grade);
     }
 
     @Test(expected = IllegalArgumentException.class)
     @Parameters({"D55555,12-11-2019 12:39,3.5", "0,23-01-2019 14:29,5.0"})
-    public void shouldAddValidStudentGrade(String studentIndex, String addingDate, Double grade){
+    public void shouldAddValidStudentGrade(String studentIndex, String addingDate, Double grade) {
         //given
         for (Student s : mockedStudentList) {
             diary.addStudent(s);
         }
         //when
-        diary.addStudentGrade(studentIndex,addingDate,grade);
+        diary.addStudentGrade(studentIndex, addingDate, grade);
     }
 
     @Test
     @Parameters({"D12333,12-11-2019 12:39,3.5", "D86784,23-01-2019 14:29,5.0"})
-    public void shouldEditStudentGrade(String studentIndex, String gradeDate, Double newGrade){
+    public void shouldEditStudentGrade(String studentIndex, String gradeDate, Double newGrade) {
         //given
         Student editedMockStudent = null;
         for (Student s : mockedStudentList) {
@@ -285,26 +287,26 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.editStudentGrade(studentIndex,gradeDate,newGrade);
+        diary.editStudentGrade(studentIndex, gradeDate, newGrade);
 
         //then
-        verify(editedMockStudent).editGrade(gradeDate,newGrade);
+        verify(editedMockStudent).editGrade(gradeDate, newGrade);
     }
 
     @Test(expected = IllegalArgumentException.class)
     @Parameters({"D55555,12-11-2019 12:39,3.5", "0,23-01-2019 14:29,5.0"})
-    public void shouldEditValidStudentGrade(String studentIndex, String gradeDate, Double newGrade){
+    public void shouldEditValidStudentGrade(String studentIndex, String gradeDate, Double newGrade) {
         //given
         for (Student s : mockedStudentList) {
             diary.addStudent(s);
         }
         //when
-        diary.editStudentGrade(studentIndex,gradeDate,newGrade);
+        diary.editStudentGrade(studentIndex, gradeDate, newGrade);
     }
 
     @Test
     @Parameters({"D12333,12-11-2019 12:39", "D86784,23-01-2019 14:29"})
-    public void shouldDeleteStudentGrade(String studentIndex, String gradeDate){
+    public void shouldDeleteStudentGrade(String studentIndex, String gradeDate) {
         //given
         Student editedMockStudent = null;
         for (Student s : mockedStudentList) {
@@ -313,7 +315,7 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.deleteStudentGrade(studentIndex,gradeDate);
+        diary.deleteStudentGrade(studentIndex, gradeDate);
 
         //then
         verify(editedMockStudent).deleteGrade(gradeDate);
@@ -321,18 +323,18 @@ public class DiaryTest {
 
     @Test(expected = IllegalArgumentException.class)
     @Parameters({"D55555,12-11-2019 12:39", "0,23-01-2019 14:29"})
-    public void shouldDeleteValidStudentGrade(String studentIndex, String gradeDate){
+    public void shouldDeleteValidStudentGrade(String studentIndex, String gradeDate) {
         //given
         for (Student s : mockedStudentList) {
             diary.addStudent(s);
         }
         //when
-        diary.deleteStudentGrade(studentIndex,gradeDate);
+        diary.deleteStudentGrade(studentIndex, gradeDate);
     }
 
     @Test
     @Parameters({"D12333,4.23", "D86784,3.06", "D12433,4.5"})
-    public void shouldCountStudentAverage(String studentIndex,Double expectedStudentAverage){
+    public void shouldCountStudentAverage(String studentIndex, Double expectedStudentAverage) {
         //given
         Student editedMockStudent = null;
         for (Student s : mockedStudentList) {
@@ -347,17 +349,54 @@ public class DiaryTest {
 
         //then
         verify(editedMockStudent).countAverage();
-        assertEquals(expectedStudentAverage,studentAverage);
+        assertEquals(expectedStudentAverage, studentAverage);
     }
 
     @Test(expected = IllegalArgumentException.class)
     @Parameters({"D55555", "0"})
-    public void shouldCountValidStudentAverage(String studentIndex){
+    public void shouldCountValidStudentAverage(String studentIndex) {
         //given
         for (Student s : mockedStudentList) {
             diary.addStudent(s);
         }
         //when
         diary.countStudentAverage(studentIndex);
+    }
+
+    private Object[] getSampleStudentsGrades() {
+        return new Object[]{
+                new Object[]{Arrays.asList(Arrays.asList(4.5, 2.0),
+                        Arrays.asList(4.5, 5.0, 4.5),
+                        Arrays.asList(4.5, 2.0, 3.5,2.0),
+                        Arrays.asList(4.5, 2.0, 3.0, 3.5)), 3.5},
+                new Object[]{Arrays.asList(Arrays.asList(3.5, 2.0),
+                        Arrays.asList(3.0,2.0),
+                        Arrays.asList(3.5,5.0),
+                        Arrays.asList(3.5, 3.0)), 3.19},
+                new Object[]{Arrays.asList(Arrays.asList(4.5, 5.0),
+                        Arrays.asList(4.5, 5.0, 4.5, 2.0),
+                        Arrays.asList(3.5, 2.0),
+                        Arrays.asList(4.5, 3.0, 3.5)), 3.82},
+        };
+    }
+
+    @Test
+    @Parameters(method = "getSampleStudentsGrades")
+    public void shouldCountGroupAverage(List<List<Double>> studentsGrades, Double expectedAverage) {
+        //given
+        int i = 0;
+        for (Student s : mockedStudentList) {
+            when(s.getGrades()).thenReturn(new ArrayList<>(studentsGrades.get(i)));
+            i++;
+            diary.addStudent(s);
+        }
+        //when
+        Double groupAverage = diary.countGroupAverage();
+
+        //then
+        for (Student s : mockedStudentList) {
+            verify(s).getGrades();
+        }
+        assertEquals(groupAverage, expectedAverage,0.01);
     }
 }

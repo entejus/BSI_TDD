@@ -144,4 +144,18 @@ public class Diary {
             throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
         }
     }
+
+    public double countGroupAverage(){
+        double groupAverage=0;
+        double gradesSum =0;
+        ArrayList<Double> groupGrades = new ArrayList<>();
+        for (Student student : studentList) {
+            groupGrades.addAll(student.getGrades());
+        }
+        for(Double grade : groupGrades){
+            gradesSum+=grade;
+        }
+        groupAverage = gradesSum/groupGrades.size();
+        return groupAverage;
+    }
 }

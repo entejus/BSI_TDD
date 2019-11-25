@@ -125,7 +125,7 @@ public class StudentTest {
         s.addGrade(dateString, grade);
 
         //then
-        assertEquals(s.getGrades().get(dateString), grade, 0.1);
+        assertEquals(s.getGradesMap().get(dateString), grade, 0.1);
     }
 
 
@@ -154,7 +154,7 @@ public class StudentTest {
         studentWithGrades.editGrade(dateString, newGrade);
 
         //then
-        assertEquals(newGrade, studentWithGrades.getGrades().get(dateString));
+        assertEquals(newGrade, studentWithGrades.getGradesMap().get(dateString));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -180,7 +180,7 @@ public class StudentTest {
         studentWithGrades.deleteGrade(dateString);
 
         //then
-        assertNull(studentWithGrades.getGrades().get(dateString));
+        assertNull(studentWithGrades.getGradesMap().get(dateString));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -290,9 +290,9 @@ public class StudentTest {
     public void shouldGetAbsencesNumber(int meetingsNumber,int expectedAbsencesNumber){
         //given
         Student s = new Student("Jan", "Kowalski", "D12333");
-        int j=1;
+        int j=0;
         for(int i=0;i<meetingsNumber;i++){
-            if(i%2==1 || j<expectedAbsencesNumber){
+            if(j<expectedAbsencesNumber){
             s.setPresence((i+1)+"-11-2019",false);
             j++;
             }

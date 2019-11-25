@@ -48,8 +48,12 @@ public class Student {
         this.indexNr = indexNr;
     }
 
-    public LinkedHashMap<String, Double> getGrades() {
+    public LinkedHashMap<String, Double> getGradesMap() {
         return this.grades;
+    }
+
+    public ArrayList<Double> getGrades() {
+        return (ArrayList<Double>) this.grades.values();
     }
 
     public LinkedHashMap<String, Boolean> getPresenceList() {
@@ -126,10 +130,10 @@ public class Student {
         } else throw new IllegalArgumentException("Nie istnieje spotkanie z tego dnia");
     }
 
-    public int getAbsencesNumber(){
-        int count =0;
+    public int getAbsencesNumber() {
+        int count = 0;
         for (Map.Entry<String, Boolean> pair : presenceList.entrySet()) {
-            if(!pair.getValue()){
+            if (!pair.getValue()) {
                 count++;
             }
         }
