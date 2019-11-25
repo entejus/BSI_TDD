@@ -106,8 +106,8 @@ public class DiaryTest {
         //given
         Student mockStudentEdit = null;
         for (Student s : mockedStudentList) {
-            if(s.getIndexNr().equals(indexToEdit))
-                mockStudentEdit= s;
+            if (s.getIndexNr().equals(indexToEdit))
+                mockStudentEdit = s;
             diary.addStudent(s);
         }
         //when
@@ -135,8 +135,8 @@ public class DiaryTest {
         //given
         Student mockStudentEdit = null;
         for (Student s : mockedStudentList) {
-            if(s.getIndexNr().equals(indexToEdit))
-                mockStudentEdit= s;
+            if (s.getIndexNr().equals(indexToEdit))
+                mockStudentEdit = s;
             diary.addStudent(s);
         }
         //when
@@ -157,4 +157,92 @@ public class DiaryTest {
         diary.editStudentSurname(indexToEdit, "Kowalski");
     }
 
+    @Test
+    @Parameters({"D12333,12-11-2019,true", "D86784,23-01-2019,false",
+            "D12433,23-01-2019,false", "D12333,23-01-2019,false"})
+    public void shouldSetStudentPresence(String studentIndex, String meetingDate, Boolean presence) {
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+        //when
+        diary.setStudentPresence(studentIndex,meetingDate,presence);
+
+        //then
+        verify(editedMockStudent).setPresence(meetingDate,presence);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555,12-11-2019,true", "D11111,12-11-2019,true", "0,12-11-2019,true"})
+    public void shouldEditValidStudentSurname(String studentIndex, String meetingDate, Boolean presence) {
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.setStudentPresence(studentIndex,meetingDate,presence);
+    }
+
+    @Test
+    @Parameters({"D12333,12-11-2019,true", "D86784,23-01-2019,true",
+            "D12433,23-01-2019,false", "D12333,23-01-2019,false"})
+    public void shouldCheckStudentPresence(String studentIndex, String meetingDate, Boolean expectedPresence) {
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+        when(editedMockStudent.checkPresence(meetingDate)).thenReturn(expectedPresence);
+        //when
+        Boolean studentPresence = diary.checkStudentPresence(studentIndex,meetingDate);
+
+        //then
+        verify(editedMockStudent).checkPresence(meetingDate);
+        assertEquals(expectedPresence,studentPresence);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555,12-11-2019", "D11111,12-11-2019", "0,12-11-2019"})
+    public void shouldCheckValidStudentPresence(String studentIndex, String meetingDate) {
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.checkStudentPresence(studentIndex,meetingDate);
+    }
+
+    @Test
+    @Parameters({"D12333,12-11-2019,false", "D86784,23-01-2019,false",
+            "D12433,23-01-2019,true", "D12333,23-01-2019,true"})
+    public void shouldEditStudentPresence(String studentIndex, String meetingDate, Boolean newPresence) {
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentPresence(studentIndex,meetingDate,newPresence);
+
+        //then
+        verify(editedMockStudent).editPresence(meetingDate,newPresence);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555,12-11-2019,true", "D11111,12-11-2019,false", "0,12-11-2019,true"})
+    public void shouldEditValidStudentPresence(String studentIndex, String meetingDate, Boolean newPresence) {
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentPresence(studentIndex,meetingDate,newPresence);
+    }
 }

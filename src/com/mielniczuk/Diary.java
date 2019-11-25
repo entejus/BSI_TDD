@@ -33,24 +33,64 @@ public class Diary {
         }
     }
 
-    public void editStudentFirstName(String indexNr,String newFirstName){
-        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr)))
-        {for(Student student  : studentList){
-            if(student.getIndexNr().equals(indexNr)){
-                student.setFirstName(newFirstName);
+    public void editStudentFirstName(String indexNr, String newFirstName) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    student.setFirstName(newFirstName);
+                }
             }
-        }}else {
+        } else {
             throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
         }
     }
 
-    public void editStudentSurname(String indexNr,String newSurname){
-        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr)))
-        {for(Student student  : studentList){
-            if(student.getIndexNr().equals(indexNr)){
-                student.setSurname(newSurname);
+    public void editStudentSurname(String indexNr, String newSurname) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    student.setSurname(newSurname);
+                }
             }
-        }}else {
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
+    public void setStudentPresence(String indexNr, String meetingDate, Boolean presence) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    student.setPresence(meetingDate, presence);
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
+    public Boolean checkStudentPresence(String indexNr, String meetingDate) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            Boolean studentPresence = null;
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    studentPresence = student.checkPresence(meetingDate);
+                }
+            }
+            return studentPresence;
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
+    public void editStudentPresence(String indexNr, String meetingDate, Boolean newPresence) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    student.editPresence(meetingDate, newPresence);
+                }
+            }
+        } else {
             throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
         }
     }
