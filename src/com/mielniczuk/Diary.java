@@ -119,13 +119,27 @@ public class Diary {
         }
     }
 
-    public void deletStudentGrade(String indexNr, String gradeDate) {
+    public void deleteStudentGrade(String indexNr, String gradeDate) {
         if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
             for (Student student : studentList) {
                 if (student.getIndexNr().equals(indexNr)) {
                     student.deleteGrade(gradeDate);
                 }
             }
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
+    public double countStudentAverage(String indexNr) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            double studentAverage = 0.0;
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    studentAverage = student.countAverage();
+                }
+            }
+            return studentAverage;
         } else {
             throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
         }

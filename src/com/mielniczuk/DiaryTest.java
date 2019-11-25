@@ -313,7 +313,7 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.deletStudentGrade(studentIndex,gradeDate);
+        diary.deleteStudentGrade(studentIndex,gradeDate);
 
         //then
         verify(editedMockStudent).deleteGrade(gradeDate);
@@ -327,6 +327,37 @@ public class DiaryTest {
             diary.addStudent(s);
         }
         //when
-        diary.deletStudentGrade(studentIndex,gradeDate);
+        diary.deleteStudentGrade(studentIndex,gradeDate);
+    }
+
+    @Test
+    @Parameters({"D12333,4.23", "D86784,3.06", "D12433,4.5"})
+    public void shouldCountStudentAverage(String studentIndex,Double expectedStudentAverage){
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+
+        when(editedMockStudent.countAverage()).thenReturn(expectedStudentAverage);
+        //when
+        Double studentAverage = diary.countStudentAverage(studentIndex);
+
+        //then
+        verify(editedMockStudent).countAverage();
+        assertEquals(expectedStudentAverage,studentAverage);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555", "0"})
+    public void shouldCountValidStudentAverage(String studentIndex){
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.countStudentAverage(studentIndex);
     }
 }
