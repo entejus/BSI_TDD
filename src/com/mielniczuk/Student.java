@@ -1,12 +1,11 @@
 package com.mielniczuk;
 
-import javax.naming.SizeLimitExceededException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
+
 
 public class Student {
     private static final ArrayList<Double> VALID_GRADES = new ArrayList<>(Arrays.asList(2.0, 3.0, 3.5, 4.0, 4.5, 5.0));

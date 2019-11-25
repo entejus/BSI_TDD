@@ -2,18 +2,23 @@ package com.mielniczuk;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -26,6 +31,9 @@ public class DiaryTest {
 
     private Diary diary;
     private ArrayList<Student> mockedStudentList;
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     @Mock
     private Student mockStudent;
@@ -431,4 +439,55 @@ public class DiaryTest {
         //when
         diary.countStudentAbsences(studentIndex);
     }
+
+    @Test
+    public void shouldExportDataToFile() throws IOException {
+        //given
+        LinkedHashMap<String,Double> grades = new LinkedHashMap<>();
+        grades.put("12-11-2019 12:39",3.5);
+        grades.put("23-01-2019 14:29",5.0);
+
+        LinkedHashMap<String,Boolean> presenceList= new LinkedHashMap<>();
+        presenceList.put("12-11-2019",true);
+        presenceList.put("15-11-2019",true);
+        presenceList.put("20-11-2019",false);
+
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+            when(s.getFirstName()).thenReturn("Jan");
+            when(s.getSurname()).thenReturn("Kowalski");
+            when(s.getGradesMap()).thenReturn(grades);
+            when(s.getPresenceList()).thenReturn(presenceList);
+        }
+
+        final File exportFile = folder.newFile("export.txt");
+        diary.exportDataToFile(exportFile);
+        assertTrue(FileUtils.sizeOf(exportFile)>0);
+    }
+
+
+
+
+    @Test
+    public void shouldImportDataFromFile() throws IOException {
+        final File importFile = folder.newFile("import.txt");
+
+        String json="[{\"firstName\":\"Jan\",\"indexNr\":\"D12333\",\"surname\":\"Kowalski\"" +
+                ",\"presenceList\":[{\"12-11-2019\":true},{\"15-11-2019\":true},{\"20-11-2019\":false}],\"grades\"" +
+                ":[{\"12-11-2019 12:39\":3.5},{\"23-01-2019 14:29\":5}]},{\"firstName\":\"Jan\",\"indexNr\":\"D86784\"" +
+                ",\"surname\":\"Kowalski\",\"presenceList\":[{\"12-11-2019\":true},{\"15-11-2019\":true},{\"20-11-2019\"" +
+                ":false}],\"grades\":[{\"12-11-2019 12:39\":3.5},{\"23-01-2019 14:29\":5}]},{\"firstName\":\"Jan\",\"" +
+                "indexNr\":\"D12433\",\"surname\":\"Kowalski\",\"presenceList\":[{\"12-11-2019\":true},{\"15-11-2019\"" +
+                ":true},{\"20-11-2019\":false}],\"grades\":[{\"12-11-2019 12:39\":3.5},{\"23-01-2019 14:29\":5}]}," +
+                "{\"firstName\":\"Jan\",\"indexNr\":\"D00333\",\"surname\":\"Kowalski\",\"presenceList\":[{\"12-11-2019\"" +
+                ":true},{\"15-11-2019\":true},{\"20-11-2019\":false}],\"grades\":[{\"12-11-2019 12:39\":3.5}," +
+                "{\"23-01-2019 14:29\":5}]}]";
+
+        FileUtils.writeStringToFile(importFile,json);
+
+        diary.importDataFromFile(importFile);
+
+
+    }
+
 }
