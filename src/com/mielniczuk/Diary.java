@@ -95,4 +95,39 @@ public class Diary {
         }
     }
 
+    public void addStudentGrade(String indexNr, String addingDate, Double grade) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    student.addGrade(addingDate, grade);
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
+    public void editStudentGrade(String indexNr, String gradeDate, Double newGrade) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    student.editGrade(gradeDate, newGrade);
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
+    public void deletStudentGrade(String indexNr, String gradeDate) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    student.deleteGrade(gradeDate);
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
 }

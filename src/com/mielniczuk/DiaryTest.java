@@ -245,4 +245,88 @@ public class DiaryTest {
         //when
         diary.editStudentPresence(studentIndex,meetingDate,newPresence);
     }
+
+    @Test
+    @Parameters({"D12333,12-11-2019 12:39,3.5", "D86784,23-01-2019 14:29,5.0"})
+    public void shouldAddStudentGrade(String studentIndex, String addingDate, Double grade){
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+        //when
+        diary.addStudentGrade(studentIndex,addingDate,grade);
+
+        //then
+        verify(editedMockStudent).addGrade(addingDate,grade);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555,12-11-2019 12:39,3.5", "0,23-01-2019 14:29,5.0"})
+    public void shouldAddValidStudentGrade(String studentIndex, String addingDate, Double grade){
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.addStudentGrade(studentIndex,addingDate,grade);
+    }
+
+    @Test
+    @Parameters({"D12333,12-11-2019 12:39,3.5", "D86784,23-01-2019 14:29,5.0"})
+    public void shouldEditStudentGrade(String studentIndex, String gradeDate, Double newGrade){
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentGrade(studentIndex,gradeDate,newGrade);
+
+        //then
+        verify(editedMockStudent).editGrade(gradeDate,newGrade);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555,12-11-2019 12:39,3.5", "0,23-01-2019 14:29,5.0"})
+    public void shouldEditValidStudentGrade(String studentIndex, String gradeDate, Double newGrade){
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentGrade(studentIndex,gradeDate,newGrade);
+    }
+
+    @Test
+    @Parameters({"D12333,12-11-2019 12:39", "D86784,23-01-2019 14:29"})
+    public void shouldDeleteStudentGrade(String studentIndex, String gradeDate){
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+        //when
+        diary.deletStudentGrade(studentIndex,gradeDate);
+
+        //then
+        verify(editedMockStudent).deleteGrade(gradeDate);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555,12-11-2019 12:39", "0,23-01-2019 14:29"})
+    public void shouldDeleteValidStudentGrade(String studentIndex, String gradeDate){
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.deletStudentGrade(studentIndex,gradeDate);
+    }
 }
