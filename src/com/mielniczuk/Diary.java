@@ -145,17 +145,31 @@ public class Diary {
         }
     }
 
-    public double countGroupAverage(){
-        double groupAverage=0;
-        double gradesSum =0;
+    public double countGroupAverage() {
+        double groupAverage;
+        double gradesSum = 0;
         ArrayList<Double> groupGrades = new ArrayList<>();
         for (Student student : studentList) {
             groupGrades.addAll(student.getGrades());
         }
-        for(Double grade : groupGrades){
-            gradesSum+=grade;
+        for (Double grade : groupGrades) {
+            gradesSum += grade;
         }
-        groupAverage = gradesSum/groupGrades.size();
+        groupAverage = gradesSum / groupGrades.size();
         return groupAverage;
+    }
+
+    public int countStudentAbsences(String indexNr) {
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr))) {
+            int studentAbsences = 0;
+            for (Student student : studentList) {
+                if (student.getIndexNr().equals(indexNr)) {
+                    studentAbsences = student.countAbsences();
+                }
+            }
+            return studentAbsences;
+        } else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
     }
 }

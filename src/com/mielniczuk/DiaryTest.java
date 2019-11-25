@@ -399,4 +399,36 @@ public class DiaryTest {
         }
         assertEquals(groupAverage, expectedAverage,0.01);
     }
+
+    @Test
+    @Parameters({"D12333,4", "D86784,2", "D12433,0"})
+    public void shouldCountStudentAbsences(String studentIndex,int expectedStudentAbsences){
+        //given
+        Student editedMockStudent = null;
+        for (Student s : mockedStudentList) {
+            if (s.getIndexNr().equals(studentIndex))
+                editedMockStudent = s;
+            diary.addStudent(s);
+        }
+
+        when(editedMockStudent.countAbsences()).thenReturn(expectedStudentAbsences);
+        //when
+        int studentAbsences = diary.countStudentAbsences(studentIndex);
+
+        //then
+        verify(editedMockStudent).countAbsences();
+        assertEquals(expectedStudentAbsences, studentAbsences);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555", "0"})
+    public void shouldCountValidStudentAbsences(String studentIndex) {
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.countStudentAbsences(studentIndex);
+    }
 }

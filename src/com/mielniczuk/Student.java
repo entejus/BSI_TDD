@@ -130,7 +130,7 @@ public class Student {
         } else throw new IllegalArgumentException("Nie istnieje spotkanie z tego dnia");
     }
 
-    public int getAbsencesNumber() {
+    public int countAbsences() {
         int count = 0;
         for (Map.Entry<String, Boolean> pair : presenceList.entrySet()) {
             if (!pair.getValue()) {

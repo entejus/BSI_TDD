@@ -287,7 +287,7 @@ public class StudentTest {
 
     @Test
     @Parameters({"6,4","0,0","2,1","2,2","5,0"})
-    public void shouldGetAbsencesNumber(int meetingsNumber,int expectedAbsencesNumber){
+    public void shouldCountAbsences(int meetingsNumber,int expectedAbsencesNumber){
         //given
         Student s = new Student("Jan", "Kowalski", "D12333");
         int j=0;
@@ -302,7 +302,7 @@ public class StudentTest {
         }
 
         //when
-        int absencesNumber = s.getAbsencesNumber();
+        int absencesNumber = s.countAbsences();
 
         //then
         assertEquals(expectedAbsencesNumber,absencesNumber);
