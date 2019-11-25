@@ -33,4 +33,26 @@ public class Diary {
         }
     }
 
+    public void editStudentFirstName(String indexNr,String newFirstName){
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr)))
+        {for(Student student  : studentList){
+            if(student.getIndexNr().equals(indexNr)){
+                student.setFirstName(newFirstName);
+            }
+        }}else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
+    public void editStudentSurname(String indexNr,String newSurname){
+        if (studentList.stream().anyMatch(student -> student.getIndexNr().equals(indexNr)))
+        {for(Student student  : studentList){
+            if(student.getIndexNr().equals(indexNr)){
+                student.setSurname(newSurname);
+            }
+        }}else {
+            throw new IllegalArgumentException("Studenta o tym numerze indeksu nie ma na liście");
+        }
+    }
+
 }

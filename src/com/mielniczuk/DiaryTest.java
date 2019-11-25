@@ -15,7 +15,8 @@ import org.mockito.junit.MockitoRule;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 
 @RunWith(JUnitParamsRunner.class)
@@ -86,16 +87,74 @@ public class DiaryTest {
         int numberAfterDelete = diary.getStudentsNumber();
 
         //then
-        assertEquals(expectedNumberAfterDelete,numberAfterDelete);
+        assertEquals(expectedNumberAfterDelete, numberAfterDelete);
     }
 
     @Test(expected = IllegalArgumentException.class)
     @Parameters({"D55555", "D11111", "0"})
-    public void shouldDeleteValidStudent(String indexToDelete){
+    public void shouldDeleteValidStudent(String indexToDelete) {
         //given
         for (Student s : mockedStudentList)
             diary.addStudent(s);
 
         diary.deleteStudent(indexToDelete);
     }
+
+    @Test
+    @Parameters({"D12333", "D86784", "D12433"})
+    public void shouldEditStudentFirstName(String indexToEdit) {
+        //given
+        Student mockStudentEdit = null;
+        for (Student s : mockedStudentList) {
+            if(s.getIndexNr().equals(indexToEdit))
+                mockStudentEdit= s;
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentFirstName(indexToEdit, "Jan");
+
+        //then
+        verify(mockStudentEdit).setFirstName("Jan");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555", "D11111", "0"})
+    public void shouldEditValidStudentFirstName(String indexToEdit) {
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentFirstName(indexToEdit, "Jan");
+    }
+
+
+    @Test
+    @Parameters({"D12333", "D86784", "D12433"})
+    public void shouldEditStudentSurname(String indexToEdit) {
+        //given
+        Student mockStudentEdit = null;
+        for (Student s : mockedStudentList) {
+            if(s.getIndexNr().equals(indexToEdit))
+                mockStudentEdit= s;
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentSurname(indexToEdit, "Kowalski");
+
+        //then
+        verify(mockStudentEdit).setSurname("Kowalski");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Parameters({"D55555", "D11111", "0"})
+    public void shouldEditValidStudentSurname(String indexToEdit) {
+        //given
+        for (Student s : mockedStudentList) {
+            diary.addStudent(s);
+        }
+        //when
+        diary.editStudentSurname(indexToEdit, "Kowalski");
+    }
+
 }
